@@ -6,4 +6,4 @@ Los inputs tienen que ser de tipo:
 
 SB;[3,20];[3,19] <br />
 DB;[3,20];[3,19] <br />
-SB;DB;[1,15]
+SB;DB;[2,15]
