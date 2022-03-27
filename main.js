@@ -1,5 +1,5 @@
 const prompt = require('prompt-sync')();
-var _ = require('lodash');
+const _ = require('lodash');
 
 function play_game(...args) {
     // empezamos el juego con los jugadores correspondientes
