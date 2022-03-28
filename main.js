@@ -18,35 +18,31 @@ function init_game(...args){
     return Array.from(args, playerHash501);
 }
 
-playerHash = (score) => nick => [nick, score];
+playerHash = (score) => player_name => [player_name, score];
 
 function recursive_turn(players){
     // Generator
-    return recursive_turn( Array.from(players, update_list));
+    
+    return recursive_turn(Array.from(players, update_list));
 }
 
-function update_list(hash){
-    console.log(`Ingrese el lanzamiento de ${hash[0]}:`);
+function update_list(player){
+    console.log(`Ingrese el lanzamiento de ${player[0]}:`);
     // Combinator
-    return playerHash(turn_action(hash[0], hash[1], input_turn()))(hash[0]);
+    return playerHash(turn_action(player[0], player[1], input_turn()))(player[0]);
 }
 
-function turn_action(nick, old_score, throws){
+function turn_action(player_name, old_score, throws){
 
     const new_score = throwsRecursion(throws, old_score);
 
     if (new_score === 0) {
-        console.log(`${nick} queda con 0 puntos y gana el juego. ¡Felicitaciones ${nick}!`);
+        console.log(`${player_name} queda con 0 puntos y gana el juego. ¡Felicitaciones ${player_name}!`);
         process.exit();
     }
 
-    console.log(`${nick} tiene ${new_score} puntos.`);
+    console.log(`${player_name} tiene ${new_score} puntos.`);
     return new_score;
-}
-
-function input_turn(){
-    //El input tiene que ser de esta forma DB;[3,20];[3,19]
-    return prompt().split(';');
 }
 
 function throwsRecursion(throwArray, current_score){
@@ -64,6 +60,11 @@ function throwsRecursion(throwArray, current_score){
         const parsed_th = JSON.parse(th);
         return throwsRecursion(_.tail(throwArray), current_score - (parsed_th[0] * parsed_th[1]));
     }
+}
+
+function input_turn(){
+    //El input tiene que ser de esta forma DB;[3,20];[3,19]
+    return prompt().split(';');
 }
 
 play_game("Juan", "Diego","Felipe");
