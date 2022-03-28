@@ -13,7 +13,9 @@ SB;DB;[2,15]
 Cuando un jugador llega a 0 puntos se declara ganador y se termina el programa.
 
 Se utilizan las librerías "lodash" para tener un código más compacto y eficiente y "prompt-sync" para recibir inputs del usuario.
+
 Se asume que el usuario siempre ingresa los inputs de manera correcta.
+
 El juego corre permanentemente hasta que algún jugador logra ganar.
 
 Link del drive: https://docs.google.com/presentation/d/1AdrWqkjuNIaFmokg5Jq9QXlVA40f3nYSY_Nb4zfV0hM/edit#slide=id.g11a99d2cbf4_0_67
