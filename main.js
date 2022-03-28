@@ -1,66 +1,65 @@
 const prompt = require('prompt-sync')();
-var _ = require('lodash');
+const _ = require('lodash');
 
-turn_action = (nick, current_score, throws) => {
-    console.log(current_score);
-    console.log(throws);
-    throws.forEach(th => {
-        console.log(th)
-
-        if (current_score === 0) {
-            console.log(`${nick} queda con 0 puntos y gana el juego. ¡Felicitaciones Nick!`)
-            process.exit();
-        }
-        else {
-            if (th == 'DB') {
-                current_score -= 50
-            }
-            else if (th == 'SB') {
-                current_score -= 25
-            }
-            else {
-                th = JSON.parse(th);
-                current_score -= (th[0] * th[1])
-            }
-            if (current_score < 0) {
-                current_score = Math.abs(current_score)
-            }
-            if (current_score === 0) {
-                console.log(`${nick} queda con 0 puntos y gana el juego. ¡Felicitaciones Nick!`)
-                process.exit();
-            }
-        }});
-        
-    console.log(`${nick} tiene ${current_score} puntos.`);
-    return current_score
-}
-
-init_game = (...args) => {
-    let players = [];
-    console.log(args);
-    args.forEach(arg => 
-        players.push([arg, 501]));
-    return players
-
-}
-
-play_game = (...args) => {
-    players = init_game(...args)
+function play_game(...args) {
+    // empezamos el juego con los jugadores correspondientes
+    const players = init_game(...args);
+    // iterator
     console.log(`Juego inicializado con jugadores ${players.map(player => player[0])}.`);
     console.log(players);
-    recursive_turn(players);
+    // llamamos a los turnos recursivamente
+    return recursive_turn(players);
 }
 
-recursive_turn = (players) => {
-    new_players = [];
-    players.map(player => {
-        nick = player[0];
-        current_score = player[1];
-        console.log(`Ingrese el lanzamiento de ${nick}:`);
-        new_score = turn_action(player[0], player[1], input_turn());
-        new_players.push([nick, new_score]);
-    });
-    recursive_turn(new_players);
+function init_game(...args){
+    // Currying
+    const playerHash501 = playerHash(501);
+    // Generator
+    return Array.from(args, playerHash501);
+}
+
+playerHash = (score) => player_name => [player_name, score];
+
+function recursive_turn(players){
+    // Generator
+    
+    return recursive_turn(Array.from(players, update_list));
+}
+
+function update_list(player){
+    console.log(`Ingrese el lanzamiento de ${player[0]}:`);
+    // Combinator
+    return playerHash(turn_action(player[0], player[1], input_turn()))(player[0]);
+}
+
+function turn_action(player_name, old_score, throws){
+
+    const new_score = throwsRecursion(throws, old_score);
+
+    if (new_score === 0) {
+        console.log(`${player_name} queda con 0 puntos y gana el juego. ¡Felicitaciones ${player_name}!`);
+        process.exit();
+    }
+
+    console.log(`${player_name} tiene ${new_score} puntos.`);
+    return new_score;
+}
+
+function throwsRecursion(throwArray, current_score){
+    if ((current_score === 0) || (throwArray.length === 0)) return current_score;
+
+    const th = _.head(throwArray);
+
+    if (th == 'DB') {
+        return throwsRecursion(_.tail(throwArray), current_score - 50);
+    }
+    else if (th == 'SB') {
+        return throwsRecursion(_.tail(throwArray), current_score - 25);
+    }
+    else {
+        const parsed_th = JSON.parse(th);
+        return throwsRecursion(_.tail(throwArray), current_score - (parsed_th[0] * parsed_th[1]));
+    }
 }
 
 const compose = (f,g) => (x) => f(g(x))
