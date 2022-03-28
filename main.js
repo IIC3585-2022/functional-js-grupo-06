@@ -25,10 +25,10 @@ function recursive_turn(players){
     return recursive_turn( Array.from(players, update_list));
 }
 
-function update_list(x){
-    console.log(`Ingrese el lanzamiento de ${x[0]}:`);
+function update_list(hash){
+    console.log(`Ingrese el lanzamiento de ${hash[0]}:`);
     // Combinator
-    return playerHash(turn_action(x[0], x[1], input_turn()))(x[0]);
+    return playerHash(turn_action(hash[0], hash[1], input_turn()))(hash[0]);
 }
 
 function turn_action(nick, old_score, throws){
@@ -49,7 +49,7 @@ function input_turn(){
     return prompt().split(';');
 }
 
-throwsRecursion = (throwArray, current_score) => {
+function throwsRecursion(throwArray, current_score){
     if ((current_score === 0) || (throwArray.length === 0)) return current_score;
 
     const th = _.head(throwArray);
@@ -64,6 +64,6 @@ throwsRecursion = (throwArray, current_score) => {
         const parsed_th = JSON.parse(th);
         return throwsRecursion(_.tail(throwArray), current_score - (parsed_th[0] * parsed_th[1]));
     }
-};
+}
 
 play_game("Juan", "Diego","Felipe");
