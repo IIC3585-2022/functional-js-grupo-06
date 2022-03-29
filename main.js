@@ -76,13 +76,7 @@ input_turn = () => {
                     goodInputs += 1;
                 } else if (numberPipe(th)){
                     var points = th.replace("[", "").replace("]", "").replace(" ", "").split(',');
-                    var goodThrow = 0;
-                    points.forEach(number => {
-                        if ( isNumberinRange(3, number) || isNumberinRange(20, number)){
-                            goodThrow += 1;
-                        }
-                    })
-                    if (goodThrow === 2){
+                    if ( isNumberinRange(3, points[0]) && isNumberinRange(20, points[1])){
                         goodInputs += 1;
                     }
                 } else {
@@ -135,7 +129,7 @@ hasTwoItems = ( th ) => {
 
 isNumberinRange = ( range, number ) => {
     if ( !isNaN(number)){
-        if ( 1 <= Number(number) <= range) {
+        if ( 1 <= Number(number) && Number(number) <= Number(range)) {
             return true;
         } else {
             console.log("Error en", number,": Ingreso un lanzamiento inválido en la casilla donde debería ir en el rango de 1 a " + range);
